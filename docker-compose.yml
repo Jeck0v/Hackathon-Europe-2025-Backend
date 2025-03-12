@@ -1,0 +1,78 @@
+services:
+  mongo:
+    container_name: mongo
+    image: mongo:5.0
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: article11
+      MONGO_INITDB_ROOT_PASSWORD: "-)i8N~x4r9cVX8"
+    volumes:
+      - mongo_data:/data/db
+    restart: always
+    healthcheck:
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+
+  mongo-express:
+    image: mongo-express:0.54
+    container_name: mongo-express
+    ports:
+      - "8081:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: article11
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "-)i8N~x4r9cVX8"
+      ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
+      ME_CONFIG_BASICAUTH_USERNAME: admin
+      ME_CONFIG_BASICAUTH_PASSWORD: admin
+    depends_on:
+      mongo:
+        condition: service_healthy
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 30s
+      retries: 5
+
+  backend:
+    container_name: backend
+    build: .
+    ports:
+      - "8000:80"
+    environment:
+      MONGO_URI: "mongodb://article11:-)i8N~x4r9cVX8@mongo:27017/article11_db?authSource=admin"
+      REDIS_URL: "redis://redis:6379/0"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:rw
+      - ./nginx/conf.d:/etc/nginx/conf.d:rw
+    depends_on:
+      - backend
+      - mongo-express
+
+volumes:
+  mongo_data:
+  redis_data:
