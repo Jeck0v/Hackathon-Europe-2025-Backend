@@ -22,7 +22,7 @@ async def register_user(user: UserCreate):
     del user_data["password"]
 
     new_user = db.users.insert_one(user_data)
-    created_user = db.users.find_one({"_id": new_user.inserted_id}, {"hashed_password": 0})  # Exclut le champ hashed_password
+    created_user = db.users.find_one({"_id": new_user.inserted_id}, {"hashed_password": 0})
 
     return UserResponse(
         id=str(created_user["_id"]),
