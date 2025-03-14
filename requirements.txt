@@ -10,3 +10,5 @@ pydantic==1.10.7
 email-validator==2.0.0.post2
 python-dotenv==1.0.0
 python-multipart==0.0.6
+passlib
+python-jose[cryptography]
