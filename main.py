@@ -3,9 +3,9 @@ from api.auth import router as auth_router
 from middlewares.security import SecurityMiddleware
 
 app = FastAPI(
-    title="Article 11 API",
-    description="API pour le projet Article 11",
-    version="1.0.0",
+    title="Team 1 - Article 11 ",
+    description="API for Article 11",
+    version="1.0.2",
     docs_url="/docs/",
 )
 
