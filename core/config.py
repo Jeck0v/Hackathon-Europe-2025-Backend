@@ -13,6 +13,6 @@ class Settings(BaseSettings):
     MONGO_URI: str
 
     class Config:
-        env_file = ".env"
+        env_file = ".env.development"
 
 settings = Settings()
