@@ -50,6 +50,8 @@ services:
     build: .
     ports:
       - "8000:80"
+    env_file:
+      - .env
     environment:
       MONGO_URI: "mongodb://article11:-)i8N~x4r9cVX8@mongo:27017/article11_db?authSource=admin"
       REDIS_URL: "redis://redis:6379/0"
