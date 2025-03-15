@@ -6,7 +6,7 @@ services:
       - "27017:27017"
     environment:
       MONGO_INITDB_ROOT_USERNAME: article11
-      MONGO_INITDB_ROOT_PASSWORD: "-)i8N~x4r9cVX8"
+      MONGO_INITDB_ROOT_PASSWORD: "1J7A4s0omlrjRM03TfE0"
     volumes:
       - mongo_data:/data/db
     restart: always
@@ -23,7 +23,7 @@ services:
       - "8081:8081"
     environment:
       ME_CONFIG_MONGODB_ADMINUSERNAME: article11
-      ME_CONFIG_MONGODB_ADMINPASSWORD: "-)i8N~x4r9cVX8"
+      ME_CONFIG_MONGODB_ADMINPASSWORD: "1J7A4s0omlrjRM03TfE0"
       ME_CONFIG_MONGODB_ENABLE_ADMIN: "true"
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: admin
@@ -53,7 +53,7 @@ services:
     env_file:
       - .env.development
     environment:
-      MONGO_URI: "mongodb://article11:-)i8N~x4r9cVX8@mongo:27017/article11_db?authSource=admin"
+      MONGO_URI: "mongodb://article11:1J7A4s0omlrjRM03TfE0@mongo:27017/article11_db?authSource=admin"
       REDIS_URL: "redis://redis:6379/0"
     depends_on:
       mongo:

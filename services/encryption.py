@@ -5,7 +5,7 @@ import base64
 import os
 
 # Clé AES-256 (32 bytes)
-AES_KEY = os.getenv("AES_KEY", "ebd7def6270c22e953df4ac3f8b04b9d92b6704a50a1361a5ce9aee3ff91f79c").encode()
+AES_KEY = os.getenv("AES_KEY").encode()
 
 def encrypt_data(data: str) -> str:
     cipher = AES.new(AES_KEY, AES.MODE_CBC)
