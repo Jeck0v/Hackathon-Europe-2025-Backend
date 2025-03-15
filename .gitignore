@@ -7,7 +7,7 @@ env/
 venv/
 ENV/
 .venv/
-
+.env
 build/
 dist/
 *.egg-info/
@@ -28,3 +28,4 @@ coverage.xml
 *.pytest_cache/
 
 *.dockerignore
+.env.development
