@@ -30,4 +30,3 @@ class UserUpdate(BaseModel):
     consent: Optional[bool] = None
 class UserInDB(User):
     hashed_password: str
-
