@@ -7,7 +7,7 @@ router = APIRouter()
 
 @router.get("/feed", response_model=list[FeedResponse])
 async def get_all_data_feed():
-    data_feeds = db.data_feed.find()
+    data_feeds = db.feed.find()
     return [
         FeedResponse(
             id_subject=str(data["_id"]),
