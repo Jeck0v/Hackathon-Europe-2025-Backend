@@ -15,15 +15,9 @@ async def get_all_users(token: str = Depends(oauth2_scheme)):
             username=user.get("username"),
             firstname=user["firstname"],
             name=user["name"],
-            age=user["age"],
-            gender=user["gender"],
-            country=user["country"],
             email=user["email"],
             consent=user.get("consent", False),
-            identity_verif=user.get("identity_verif", False),
-            role=user.get("role", "user"),
-            historic=user.get("historic", []),
-            streak=user.get("streak", 0)
+            role=user.get("role", "user")
         ) for user in users
     ]
 
@@ -38,15 +32,9 @@ async def get_user_by_id(user_id: str, token: str = Depends(oauth2_scheme)):
         username=user.get("username"),
         firstname=user["firstname"],
         name=user["name"],
-        age=user["age"],
-        gender=user["gender"],
-        country=user["country"],
         email=user["email"],
         consent=user.get("consent", False),
-        identity_verif=user.get("identity_verif", False),
-        role=user.get("role", "user"),
-        historic=user.get("historic", []),
-        streak=user.get("streak", 0)
+        role=user.get("role", "user")
     )
 
 @router.put("/users/{user_id}", response_model=UserResponse)
@@ -71,15 +59,9 @@ async def update_user(user_id: str, user_update: UserUpdate, token: str = Depend
         username=updated_user.get("username"),
         firstname=updated_user["firstname"],
         name=updated_user["name"],
-        age=updated_user["age"],
-        gender=updated_user["gender"],
-        country=updated_user["country"],
         email=updated_user["email"],
         consent=updated_user.get("consent", False),
-        identity_verif=updated_user.get("identity_verif", False),
-        role=updated_user.get("role", "user"),
-        historic=updated_user.get("historic", []),
-        streak=updated_user.get("streak", 0)
+        role=updated_user.get("role", "user")
     )
 
 @router.delete("/users/{user_id}", response_model=UserResponse)
@@ -94,13 +76,7 @@ async def delete_user(user_id: str, token: str = Depends(oauth2_scheme)):
         username=user.get("username"),
         firstname=user["firstname"],
         name=user["name"],
-        age=user["age"],
-        gender=user["gender"],
-        country=user["country"],
         email=user["email"],
         consent=user.get("consent", False),
-        identity_verif=user.get("identity_verif", False),
-        role=user.get("role", "user"),
-        historic=user.get("historic", []),
-        streak=user.get("streak", 0)
+        role=user.get("role", "user")
     )

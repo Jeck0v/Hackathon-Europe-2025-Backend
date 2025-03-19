@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from db.session import db
-from schemas.user import UserResponse, Token, UserCreate, UserInDB
+from schemas.user import UserResponse, Token, UserCreate
 from core.security import hash_password, verify_password, create_access_token
 from datetime import timedelta
 from core.config import settings
@@ -12,10 +12,9 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 @router.post("/register", response_model=UserResponse)
 async def register_user(user: UserCreate):
-    if db.users.find_one({"email": user.email}):
+    existing_user = db.users.find_one({"email": user.email})
+    if existing_user:
         raise HTTPException(status_code=400, detail="Email déjà utilisé.")
-    if db.users.find_one({"username": user.username}):
-        raise HTTPException(status_code=400, detail="Nom d'utilisateur déjà utilisé.")
 
     hashed_password = hash_password(user.password)
     user_data = user.dict()
@@ -23,9 +22,17 @@ async def register_user(user: UserCreate):
     del user_data["password"]
 
     new_user = db.users.insert_one(user_data)
-    created_user = db.users.find_one({"_id": new_user.inserted_id}, {"hashed_password": 0})  # Masquer le hash
+    created_user = db.users.find_one({"_id": new_user.inserted_id}, {"hashed_password": 0})
 
-    return UserResponse(**created_user, id=str(created_user["_id"]))
+    return UserResponse(
+        id=str(created_user["_id"]),
+        username=created_user.get("username"),
+        firstname=created_user["firstname"],
+        name=created_user["name"],
+        email=created_user["email"],
+        consent=created_user.get("consent", False),
+        role=created_user.get("role", "user")
+    )
 
 @router.post("/login", response_model=Token)
 async def login_user(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -33,7 +40,8 @@ async def login_user(form_data: OAuth2PasswordRequestForm = Depends()):
     if not user:
         raise HTTPException(status_code=401, detail="Nom d'utilisateur incorrect.")
 
-    if not verify_password(form_data.password, user["hashed_password"]):
+    hashed_password = user.get("hashed_password")
+    if not hashed_password or not verify_password(form_data.password, hashed_password):
         raise HTTPException(status_code=401, detail="Mot de passe incorrect.")
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
