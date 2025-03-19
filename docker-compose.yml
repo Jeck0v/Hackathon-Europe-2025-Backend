@@ -9,6 +9,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: "1J7A4s0omlrjRM03TfE0"
     volumes:
       - mongo_data:/data/db
+      - ./db:/docker-entrypoint-initdb.d
     restart: always
     healthcheck:
       test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
@@ -31,6 +32,13 @@ services:
     depends_on:
       mongo:
         condition: service_healthy
+
+  init_db:
+    build: .
+    volumes:
+      - ./db:/app
+    depends_on:
+      - mongo
 
   redis:
     image: redis:latest

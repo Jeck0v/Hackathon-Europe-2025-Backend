@@ -2,30 +2,17 @@ from db.session import get_db
 
 data_user = [
     {
-        "id" : "test",
-        "username":"Jecko",
-        "name" : "Doe",
-        "firstname" : "John",
-        "age" : "21",
-        "country" : "France",
-        "gender" : "other",
-        "email": "johndoe@gmail.com",
-        "password" : "1234321", 
-        "consent" : False,
-        "identity_verif" : False,
-        "historic" : [],
-        "streak" : 0
     }
 ]
 
 data_feed = [
     {
         "id_subject" : "1",
-        "short_description" : "",
-        "image" : "",
-        "context" : "",
+        "short_description" : "asasd",
+        "image" : "asasd",
+        "context" : "asdasd",
         "impact" : [],
-        "source" : "",
+        "source" : "asasd",
         "votes" : {"0" : 0, "1" : 0, "2" : 0}
     }
 ]
@@ -45,8 +32,18 @@ def initialize_database():
     required_collections = ['users', 'feed', 'compromise']
     existing_collections = db.list_collection_names()
     for collection in required_collections:
-        if collection not in existing_collections:
+        if collection not in existing_collections:                
             db.create_collection(collection)
             print(f"Collection '{collection}' créée.")
+            
+            # Make it better (just did it to be quick)
+            match collection :
+                case 'users' :
+                    print("hello")
+                    db[collection].insertMany(data_user)
+                case 'feed':
+                    db[collection].insertMany(data_feed)
+                case 'data_compromise' :
+                    db[collection].insertMany(data_compromise)
 
 initialize_database()

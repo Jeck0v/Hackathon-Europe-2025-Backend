@@ -29,9 +29,15 @@ async def register_user(user: UserCreate):
         username=created_user.get("username"),
         firstname=created_user["firstname"],
         name=created_user["name"],
+        age=created_user["age"],
+        gender=created_user["gender"],
+        country=created_user["country"],
         email=created_user["email"],
         consent=created_user.get("consent", False),
-        role=created_user.get("role", "user")
+        identity_verif=created_user.get("identity_verif", False),
+        role=created_user.get("role", "user"),
+        historic=created_user.get("historic", []),
+        streak=created_user.get("streak", 0)
     )
 
 @router.post("/login", response_model=Token)

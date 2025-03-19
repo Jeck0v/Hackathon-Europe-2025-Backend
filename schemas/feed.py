@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Dict, Optional
 
-class DataFeedResponse(BaseModel):
+class FeedResponse(BaseModel):
     id_subject: str
     short_description: str
     image: str
@@ -13,7 +13,7 @@ class DataFeedResponse(BaseModel):
     class Config:
         from_attributes = True
 
-class DataFeedCreate(BaseModel):
+class FeedCreate(BaseModel):
     id_subject: str
     short_description: str
     image: str
@@ -22,7 +22,7 @@ class DataFeedCreate(BaseModel):
     source: str
     votes: Dict[str, int]  
 
-class DataFeedUpdate(BaseModel):
+class FeedUpdate(BaseModel):
     id_subject: Optional[str] = None
     short_description: Optional[str] = None
     image: Optional[str] = None
