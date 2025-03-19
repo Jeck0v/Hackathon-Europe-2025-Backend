@@ -10,13 +10,11 @@ services:
     volumes:
       - mongo_data:/data/db
     restart: always
-    command: mongod --auth
     healthcheck:
-      test: ["CMD", "mongosh", "-u", "article11", "-p", "1J7A4s0omlrjRM03TfE0", "--authenticationDatabase", "admin", "--eval", "db.adminCommand('ping')"]
+      test: ["CMD", "mongo", "--eval", "db.adminCommand('ping')"]
       interval: 5s
       timeout: 30s
       retries: 5
-
 
   mongo-express:
     image: mongo-express:0.54
@@ -80,6 +78,7 @@ services:
     depends_on:
       - backend
       - mongo-express
+
 
 volumes:
   mongo_data:
