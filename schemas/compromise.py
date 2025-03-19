@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class DataCompromiseResponse(BaseModel):
+class CompromiseResponse(BaseModel):
     id_subject: str
     id_user: str
     text: str
@@ -9,12 +9,12 @@ class DataCompromiseResponse(BaseModel):
     class Config:
         from_attributes = True
 
-class DataCompromiseCreate(BaseModel):
+class CompromiseCreate(BaseModel):
     id_subject: str
     id_user: str
     text: str
 
-class DataCompromiseUpdate(BaseModel):
+class CompromiseUpdate(BaseModel):
     id_subject: Optional[str] = None
     id_user: Optional[str] = None
     text: Optional[str] = None

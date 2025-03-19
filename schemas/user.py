@@ -2,7 +2,7 @@ from pydantic import BaseModel, EmailStr
 from typing import Optional
 
 class UserResponse(BaseModel):
-    id: str
+    id_user: str
     username: str
     firstname: str
     name: str
@@ -21,7 +21,7 @@ class UserResponse(BaseModel):
         from_attributes = True
 
 class UserCreate(BaseModel):
-    id: str
+    id_user: str
     username: str
     firstname: str
     name: str
@@ -37,7 +37,7 @@ class UserCreate(BaseModel):
     streak: int
 
 class UserUpdate(BaseModel):
-    id: Optional[str] = None 
+    id_user: Optional[str] = None 
     username: Optional[str] = None
     firstname: Optional[str] = None
     name: Optional[str] = None

@@ -2,6 +2,8 @@ from fastapi import APIRouter, HTTPException, Depends
 from bson import ObjectId
 from db.session import db
 from schemas.user import UserResponse, UserUpdate
+from schemas.feed import FeedUpdate
+from schemas.compromise import CompromiseUpdate
 from core.security import oauth2_scheme, hash_password
 
 router = APIRouter()
@@ -104,3 +106,44 @@ async def delete_user(user_id: str, token: str = Depends(oauth2_scheme)):
         historic=user.get("historic", []),
         streak=user.get("streak", 0)
     )
+    
+    
+@router.put("/users/{user_id}/vote/{feed_id}", response_model=UserResponse)
+async def user_vote(user_id: str, feed_id: str, user_vote: int, user_vote_detail: str, token: str = Depends(oauth2_scheme)):
+    user = db.users.find_one({"_id": ObjectId(user_id)})
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé.")
+    
+    feed = db.feed.find_one({"_id": ObjectId(feed_id)})
+    if not feed:
+        raise HTTPException(status_code=404, detail="Feed non trouvé.")
+    
+    
+    user["streak"] += 1
+    user["historic"].append({"feed_id":feed_id, "feed_title": feed["short_description"], "response": user_vote})
+    
+    if user_vote == "2" :
+        compromise = db.compromise.find_one({"_id": ObjectId(compromise_id)})
+        if not compromise:
+            raise HTTPException(status_code=404, detail="Feed non trouvé.")
+        compromise["id_subject"] = feed_id
+        compromise["id_user"] = user_id
+        if user_vote_detail :
+            compromise["text"] = user_vote_detail
+    
+    # See with the team how the user_vote will be stored, for now it'll stay simple
+    feed["votes"][str(user_vote)] += 1
+
+    db.users.update_one({"_id": ObjectId(user_id)}, {"$set": user})
+        
+    db.feed.update_one({"_id": ObjectId(feed_id)}, {"$set": feed})
+    
+    return {"status":200, "message":"voted"}
+
+@router.get("/users/{user_id}/history", response_model=UserResponse)
+async def get_user_history_by_id(user_id: str, token: str = Depends(oauth2_scheme)):
+    user = db.users.find_one({"_id": ObjectId(user_id)}, {"hashed_password": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="Utilisateur non trouvé.")
+
+    return user["historic"]

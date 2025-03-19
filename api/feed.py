@@ -22,7 +22,7 @@ async def get_all_data_feed():
 
 @router.get("/feed/{subject_id}", response_model=FeedResponse)
 async def get_data_feed_by_id(subject_id: str):
-    data_feed = db.data_feed.find_one({"_id": ObjectId(subject_id)})
+    data_feed = db.feed.find_one({"_id": ObjectId(subject_id)})
     if not data_feed:
         raise HTTPException(status_code=404, detail="Data feed not found.")
     
@@ -39,20 +39,20 @@ async def get_data_feed_by_id(subject_id: str):
 @router.post("/feed", response_model=FeedResponse)
 async def create_data_feed(data_feed: FeedCreate):
     new_data_feed = data_feed.dict()
-    result = db.data_feed.insert_one(new_data_feed)
+    result = db.feed.insert_one(new_data_feed)
     new_data_feed["_id"] = result.inserted_id
     return FeedResponse(**new_data_feed)
 
 @router.put("/feed/{subject_id}", response_model=FeedResponse)
 async def update_data_feed(subject_id: str, data_feed_update: FeedUpdate):
-    existing_data_feed = db.data_feed.find_one({"_id": ObjectId(subject_id)})
+    existing_data_feed = db.feed.find_one({"_id": ObjectId(subject_id)})
     if not existing_data_feed:
         raise HTTPException(status_code=404, detail="Data feed not found.")
 
     update_data = data_feed_update.dict(exclude_unset=True)
-    db.data_feed.update_one({"_id": ObjectId(subject_id)}, {"$set": update_data})
+    db.feed.update_one({"_id": ObjectId(subject_id)}, {"$set": update_data})
 
-    updated_data_feed = db.data_feed.find_one({"_id": ObjectId(subject_id)})
+    updated_data_feed = db.feed.find_one({"_id": ObjectId(subject_id)})
     return FeedResponse(
         id_subject=str(updated_data_feed["_id"]),
         short_description=updated_data_feed["short_description"],
@@ -65,11 +65,11 @@ async def update_data_feed(subject_id: str, data_feed_update: FeedUpdate):
 
 @router.delete("/feed/{subject_id}", response_model=FeedResponse)
 async def delete_data_feed(subject_id: str):
-    data_feed = db.data_feed.find_one({"_id": ObjectId(subject_id)})
+    data_feed = db.feed.find_one({"_id": ObjectId(subject_id)})
     if not data_feed:
         raise HTTPException(status_code=404, detail="Data feed not found.")
 
-    db.data_feed.delete_one({"_id": ObjectId(subject_id)})
+    db.feed.delete_one({"_id": ObjectId(subject_id)})
     return FeedResponse(
         id_subject=str(data_feed["_id"]),
         short_description=data_feed["short_description"],
