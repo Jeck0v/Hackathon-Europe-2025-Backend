@@ -52,6 +52,9 @@ class UserUpdate(BaseModel):
     historic: Optional[list] = None
     streak: Optional[int] = None
 
+class UserInDB(UserResponse):
+    hashed_password: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
