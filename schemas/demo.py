@@ -1,22 +1,19 @@
 from pydantic import BaseModel
 from typing import Optional
 
-class CompromiseResponse(BaseModel):
+class DEMOCompromiseResponse(BaseModel):
     id_subject: str
-    id_user: str
     text: str
 
     class Config:
         from_attributes = True
 
-class CompromiseCreate(BaseModel):
+class DEMOCompromiseCreate(BaseModel):
     id_subject: str
-    id_user: str
     text: str
 
-class CompromiseUpdate(BaseModel):
+class DEMOCompromiseUpdate(BaseModel):
     id_subject: Optional[str] = None
-    id_user: Optional[str] = None
     text: Optional[str] = None
 
 class Token(BaseModel):

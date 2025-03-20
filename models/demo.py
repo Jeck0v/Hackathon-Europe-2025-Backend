@@ -3,7 +3,6 @@ from typing import Optional
 
 class DataCompromiseResponse(BaseModel):
     id_subject: str
-    id_user: str
     text: str
 
     class Config:
@@ -11,10 +10,8 @@ class DataCompromiseResponse(BaseModel):
 
 class DataCompromiseCreate(BaseModel):
     id_subject: str
-    id_user: str
     text: str
 
 class DataCompromiseUpdate(BaseModel):
     id_subject: Optional[str] = None
-    id_user: Optional[str] = None
     text: Optional[str] = None
