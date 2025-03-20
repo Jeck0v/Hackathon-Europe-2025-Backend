@@ -25,6 +25,9 @@ async def get_all_data_feed():
 @router.get("/feed/search/{searchCharacter}", response_model=list[FeedResponse])
 async def search_data(searchCharacter: str):
     data_feed = db.feed.find({"short_description": {"$regex": searchCharacter, "$options": "i"}})
+    if not data_feed:
+        raise HTTPException(status_code=404, detail="Data feed not found.")
+
     return FeedResponse(
         id_subject=str(data_feed["_id"]),
         short_description=data_feed["short_description"],
