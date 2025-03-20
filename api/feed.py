@@ -22,6 +22,20 @@ async def get_all_data_feed():
     ]
 
 
+@router.get("/feed/search/{searchCharacter}", response_model=list[FeedResponse])
+async def search_data(searchCharacter: str):
+    data_feed = db.feed.find({"short_description": {"$regex": searchCharacter, "$options": "i"}})
+    return FeedResponse(
+        id_subject=str(data_feed["_id"]),
+        short_description=data_feed["short_description"],
+        image=data_feed["image"],
+        context=data_feed["context"],
+        impact=data_feed["impact"],
+        source=data_feed["source"],
+        votes=data_feed.get("votes", {"0": 0, "1": 0, "2": 0})
+    )
+        
+
 @router.get("/feed/{subject_id}", response_model=FeedResponse)
 async def get_data_feed_by_id(subject_id: str):
     data_feed = db.feed.find_one({"_id": ObjectId(subject_id)})
