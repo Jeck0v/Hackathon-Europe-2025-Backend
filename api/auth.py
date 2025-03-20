@@ -25,26 +25,32 @@ async def register_user(user: UserCreate):
     created_user = db.users.find_one({"_id": new_user.inserted_id}, {"hashed_password": 0})
 
     return UserResponse(
-        id=str(created_user["_id"]),
+        id_user=str(created_user["_id"]),
         username=created_user.get("username"),
         firstname=created_user["firstname"],
         name=created_user["name"],
+        age=created_user["age"],
+        gender=created_user["gender"],
+        country=created_user["country"],
         email=created_user["email"],
         consent=created_user.get("consent", False),
-        role=created_user.get("role", "user")
+        identity_verif=created_user.get("identity_verif", False),
+        role=created_user.get("role", "user"),
+        historic=created_user.get("historic", []),
+        streak=created_user.get("streak", 0)
     )
 
 @router.post("/login", response_model=Token)
 async def login_user(form_data: OAuth2PasswordRequestForm = Depends()):
     user = db.users.find_one({"username": form_data.username})
     if not user:
-        raise HTTPException(status_code=401, detail="Nom d'utilisateur incorrect.")
+        raise HTTPException(status_code=401, detail="Incorrect Username.")
 
     hashed_password = user.get("hashed_password")
     if not hashed_password or not verify_password(form_data.password, hashed_password):
-        raise HTTPException(status_code=401, detail="Mot de passe incorrect.")
+        raise HTTPException(status_code=401, detail="Incorrect Password.")
 
     access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(data={"sub": str(user["_id"])}, expires_delta=access_token_expires)
 
-    return Token(access_token=access_token, token_type="bearer")
+    return Token(access_token=access_token, token_type="bearer", id_user=str(user["_id"]))
