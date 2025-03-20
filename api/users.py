@@ -114,7 +114,7 @@ async def delete_user(user_id: str, token: str = Depends(oauth2_scheme)):
 
 @router.put("/users/{user_id}/vote/{feed_id}")
 async def user_vote(user_id: str, feed_id: str, user_vote: int, user_vote_detail: str = None,
-                    token: str = Depends(oauth2_scheme)):
+                    ):
     user = db.users.find_one({"_id": ObjectId(user_id)})
     if not user:
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé.")
