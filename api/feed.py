@@ -24,19 +24,24 @@ async def get_all_data_feed():
 
 @router.get("/feed/search/{searchCharacter}", response_model=list[FeedResponse])
 async def search_data(searchCharacter: str):
-    data_feed = db.feed.find({"short_description": {"$regex": searchCharacter, "$options": "i"}})
-    if not data_feed:
-        raise HTTPException(status_code=404, detail="Data feed not found.")
+    cursor = db.feed.find({"short_description": {"$regex": searchCharacter, "$options": "i"}})
+    results = []
 
-    return FeedResponse(
-        id_subject=str(data_feed["_id"]),
-        short_description=data_feed["short_description"],
-        image=data_feed["image"],
-        context=data_feed["context"],
-        impact=data_feed["impact"],
-        source=data_feed["source"],
-        votes=data_feed.get("votes", {"0": 0, "1": 0, "2": 0})
-    )
+    async for item in cursor:
+        results.append(FeedResponse(
+            id_subject=str(item["_id"]),
+            short_description=item["short_description"],
+            image=item["image"],
+            context=item["context"],
+            impact=item["impact"],
+            source=item["source"],
+            votes=item.get("votes", {"0": 0, "1": 0, "2": 0})
+        ))
+    
+    if not results:
+        raise HTTPException(status_code=404, detail="No feed items found")
+    
+    return results
         
 
 @router.get("/feed/{subject_id}", response_model=FeedResponse)
