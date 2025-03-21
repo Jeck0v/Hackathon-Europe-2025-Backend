@@ -77,18 +77,17 @@ data_feed = [
             "votes": {"0": 0, "1": 0, "2": 0}
         },
         {
-            "id_subject": "6",
-            "title": "EU Enlargement and Relations with Western Balkans",
-            "short_description": "EU to discuss the accession process and cooperation with Western Balkan countries.",
-            "image": "https://example.com/eu_western_balkans.jpg",
-            "context": "The European Council will assess the progress of Western Balkan countries in their EU accession processes and explore ways to enhance regional cooperation and integration into the EU single market.",
-            "impact": [
-                "Potential expansion of the EU",
-                "Strengthened political and economic ties",
-                "Promotion of stability in the Western Balkans"
-            ],
-            "source": "European Movement",
-            "votes": {"0": 0, "1": 0, "2": 0}
+          "id_subject": "6",
+          "title": "EU Artificial Intelligence Act Implementation",
+          "short_description": "The European Union is set to implement the world's first comprehensive AI legislation, the Artificial Intelligence Act, aiming to regulate AI technologies based on their associated risks.",
+          "image": "ttps://example.com/eu_western_balkans.jp]",
+          "context": "The European Union has introduced the Artificial Intelligence Act to oversee the development and application of AI technologies. The legislation categorizes AI systems into four risk levels—minimal, limited, high, and unacceptable—with corresponding regulatory requirements. Officially published on July 12, 2024, the Act will enter into force on August 1, 2024, with full application by August 2, 2026. Some provisions, such as those banning certain AI practices, will apply earlier, starting February 2, 2025.",
+          "impact": [
+            "Regulatory sandboxes to support AI innovation",
+            "Strict penalties for non-compliance, up to €35 million or 7% of global turnover"
+          ],
+          "source": "CECE - Committee for European Construction Equipment",
+          "votes": {"0": 0, "1": 0, "2": 0}
         },
 ]
 

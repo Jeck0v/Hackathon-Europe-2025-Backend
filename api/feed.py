@@ -3,7 +3,7 @@ from bson import ObjectId
 from db.session import db
 from schemas.feed import FeedResponse, FeedCreate, FeedUpdate
 
-router = APIRouter()
+router = APIRouter(tags=["Feed"])
 
 
 @router.get("/feed", response_model=list[FeedResponse])

@@ -6,7 +6,7 @@ from schemas.feed import FeedUpdate
 from schemas.compromise import CompromiseUpdate
 from core.security import oauth2_scheme, hash_password
 
-router = APIRouter()
+router = APIRouter(tags=["Users"])
 
 
 @router.get("/users", response_model=list[UserResponse])
