@@ -7,7 +7,7 @@ from datetime import timedelta
 from core.config import settings
 from bson import ObjectId
 
-router = APIRouter()
+router = APIRouter(tags=["Auth"])
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 @router.post("/register", response_model=UserResponse)

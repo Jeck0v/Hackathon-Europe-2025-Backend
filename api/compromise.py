@@ -3,7 +3,7 @@ from bson import ObjectId
 from db.session import db
 from schemas.compromise import CompromiseResponse, CompromiseCreate, CompromiseUpdate
 
-router = APIRouter()
+router = APIRouter(tags=["Compromise"])
 
 
 @router.get("/compromise", response_model=list[CompromiseResponse])
