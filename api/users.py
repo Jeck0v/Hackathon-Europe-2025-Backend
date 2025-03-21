@@ -126,7 +126,7 @@ async def user_vote(user_id: str, feed_id: str, user_vote: int, user_vote_detail
     user["streak"] += 1
     user["historic"].append({"feed_id": feed_id, "feed_title": feed["short_description"], "response": user_vote})
 
-    if user_vote == "2":
+    if user_vote == "2" or user_vote == "3":
         compromise = db.compromise.find_one({"_id": ObjectId(compromise_id)})
         if not compromise:
             raise HTTPException(status_code=404, detail="Feed non trouvé.")
