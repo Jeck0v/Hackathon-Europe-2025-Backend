@@ -1,4 +1,4 @@
-# Back-end-Hackathon-2025
+# Back-end-Hackathon-Europe-2025
 
 ## How to start:
 ```bash

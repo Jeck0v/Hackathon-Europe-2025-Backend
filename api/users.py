@@ -112,9 +112,9 @@ async def delete_user(user_id: str, token: str = Depends(oauth2_scheme)):
     )
 
 
-@router.put("/users/{user_id}/vote/{feed_id}", response_model=UserResponse)
-async def user_vote(user_id: str, feed_id: str, user_vote: int, user_vote_detail: str,
-                    token: str = Depends(oauth2_scheme)):
+@router.put("/users/{user_id}/vote/{feed_id}")
+async def user_vote(user_id: str, feed_id: str, user_vote: int, user_vote_detail: str = None,
+                    ):
     user = db.users.find_one({"_id": ObjectId(user_id)})
     if not user:
         raise HTTPException(status_code=404, detail="Utilisateur non trouvé.")
@@ -135,7 +135,7 @@ async def user_vote(user_id: str, feed_id: str, user_vote: int, user_vote_detail
         if user_vote_detail:
             compromise["text"] = user_vote_detail
 
-    # See with the team how the user_vote will be stored, for now it'll stay simple
+    
     feed["votes"][str(user_vote)] += 1
 
     db.users.update_one({"_id": ObjectId(user_id)}, {"$set": user})
