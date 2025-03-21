@@ -99,11 +99,16 @@ data_compromise = [
         "text": "Je test l'application"
     }
 ]
-
+DEMO_compromise = [
+    {
+        "id_subject": "1",
+        "text": "Je ne veux pas que mon argent parte n'importe où"
+    }
+]
 
 def initialize_database():
     db = get_db()
-    required_collections = ['users', 'feed', 'compromise']
+    required_collections = ['users', 'feed', 'compromise', 'demo']
     existing_collections = db.list_collection_names()
     for collection in required_collections:
         if collection not in existing_collections:
@@ -119,6 +124,8 @@ def initialize_database():
                         db[collection].insert_many(data_feed)
                     case 'compromise':
                         db[collection].insert_many(data_compromise)
+                    case 'demo':
+                        db[collection].insert_many(DEMO_compromise)
             except Exception as e:
                 print(f"Error inserting data into {collection}: {e}")
 
