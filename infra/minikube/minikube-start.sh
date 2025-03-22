@@ -13,6 +13,7 @@ minikube start --nodes=3 --driver=docker
 echo " Activating Ingress..."
 minikube addons enable ingress
 
+
 echo "Cluster Minikube operational, infos:"
 minikube status
 kubectl get nodes
